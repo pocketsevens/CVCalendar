@@ -140,3 +140,7 @@ public final class CVCalendarMenuView: UIView {
         }
     }
 }
+
+extension CVCalendarMenuView {
+	public class func _forceLinkerLoad() { print("Forcing linker load for CVCalendarMenuView...") }
+}

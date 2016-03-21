@@ -58,6 +58,7 @@ private extension CVCalendarTouchController {
             case .Single:
                 coordinator.performDayViewSingleSelection(dayView)
                 calendarView.didSelectDayView(dayView)
+				calendarView.userExplicitlySelectedDate(dayView.date)
                 
             case .Range(.Started):
                 print("Received start of range selection.")

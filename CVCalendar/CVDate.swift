@@ -62,7 +62,7 @@ extension CVDate {
     public var globalDescription: String {
         get {
             let month = dateFormattedStringWithFormat("MMMM", fromDate: date)
-            return "\(month), \(year)"
+            return "\(month) \(year)"
         }
     }
     

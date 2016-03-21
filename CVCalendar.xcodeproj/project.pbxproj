@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		27E120E91C9C9DCC002CBC60 /* Build Framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 27E120EC1C9C9DCC002CBC60 /* Build configuration list for PBXAggregateTarget "Build Framework" */;
+			buildPhases = (
+				27E120ED1C9C9DD9002CBC60 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Build Framework";
+			productName = "Build Framework";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		45D9D8B71C5006AA006673B2 /* CVCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 45D9D8B61C5006AA006673B2 /* CVCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45D9D8BE1C5006AA006673B2 /* CVCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D9D8B31C5006AA006673B2 /* CVCalendar.framework */; };
@@ -283,6 +297,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = GameApp;
 				TargetAttributes = {
+					27E120E91C9C9DCC002CBC60 = {
+						CreatedOnToolsVersion = 7.3;
+					};
 					45D9D8B21C5006AA006673B2 = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -305,6 +322,7 @@
 			targets = (
 				45D9D8B21C5006AA006673B2 /* CVCalendar */,
 				45D9D8BC1C5006AA006673B2 /* CVCalendarTests */,
+				27E120E91C9C9DCC002CBC60 /* Build Framework */,
 			);
 		};
 /* End PBXProject section */
@@ -325,6 +343,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		27E120ED1C9C9DD9002CBC60 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Merge Script\n\n# 1\n# Set bash script to exit immediately if any commands fail.\nset -e\n\n# 2\n# Setup some constants for use later on.\nFRAMEWORK_NAME=\"CVCalendar\"\n\n# 3\n# If remnants from a previous build exist, delete them.\nif [ -d \"${SRCROOT}/build\" ]; then\nrm -rf \"${SRCROOT}/build\"\nfi\n\n# 4\n# Build the framework for device and for simulator (using\n# all needed architectures).\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch arm64 -arch armv7 -arch armv7s only_active_arch=no defines_module=yes -sdk \"iphoneos\"\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch x86_64 -arch i386 only_active_arch=no defines_module=yes -sdk \"iphonesimulator\"\n\n# 5\n# Remove .framework file if exists on Desktop from previous run.\nif [ -d \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\" ]; then\nrm -rf \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\"\nfi\n\n# 6\n# Copy the device version of framework to Desktop.\ncp -r \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework\" \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\"\n\n# 7\n# Replace the framework executable within the framework with\n# a new version created by merging the device and simulator\n# frameworks' executables with lipo.\nlipo -create -output \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphonesimulator/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\"\n\n# 8\n# Copy the Swift module mappings for the simulator into the\n# framework.  The device mappings already exist from step 6.\ncp -r \"${SRCROOT}/build/Release-iphonesimulator/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule/\" \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule\"\n\n# 9\n# Delete the most recent build.\nif [ -d \"${SRCROOT}/build\" ]; then\nrm -rf \"${SRCROOT}/build\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		45D9D8AE1C5006AA006673B2 /* Sources */ = {
@@ -380,6 +414,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		27E120EA1C9C9DCC002CBC60 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		27E120EB1C9C9DCC002CBC60 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		45D9D8C51C5006AA006673B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -529,6 +577,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		27E120EC1C9C9DCC002CBC60 /* Build configuration list for PBXAggregateTarget "Build Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27E120EA1C9C9DCC002CBC60 /* Debug */,
+				27E120EB1C9C9DCC002CBC60 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		45D9D8AD1C5006AA006673B2 /* Build configuration list for PBXProject "CVCalendar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

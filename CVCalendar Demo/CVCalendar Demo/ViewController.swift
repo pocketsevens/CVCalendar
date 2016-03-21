@@ -8,6 +8,11 @@
 
 import UIKit
 
+class ParentVC: UIViewController {
+	
+}
+
+
 class ViewController: UIViewController {
     // MARK: - Properties
     @IBOutlet weak var calendarView: CVCalendarView!
@@ -26,7 +31,15 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         monthLabel.text = CVDate(date: NSDate()).globalDescription
+		
+		
+		NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(ViewController.timerFired), userInfo: nil, repeats: false)
     }
+	
+	func timerFired() {
+		let date = NSDate().dateByAddingTimeInterval(259200)
+		calendarView.selectDate(date)
+	}
 
     @IBAction func removeCircleAndDot(sender: AnyObject) {
         if let dayView = selectedDay {
@@ -50,7 +63,11 @@ class ViewController: UIViewController {
 // MARK: - CVCalendarViewDelegate & CVCalendarMenuViewDelegate
 
 extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
-    
+	
+	func userExplicitlySelectedDate(date: Date) {
+		print(date.commonDescription)
+	}
+	
     /// Required method to implement!
     func presentationMode() -> CalendarMode {
         return .MonthView
@@ -62,7 +79,11 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     // MARK: Optional methods
-    
+	
+	func shouldAutoSelectDayOnMonthChange() -> Bool {
+		return false
+	}
+	
     func shouldShowWeekdaysOut() -> Bool {
         return shouldShowDaysOut
     }
@@ -78,39 +99,41 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     
     func presentedDateUpdated(date: CVDate) {
         if monthLabel.text != date.globalDescription && self.animationFinished {
-            let updatedMonthLabel = UILabel()
-            updatedMonthLabel.textColor = monthLabel.textColor
-            updatedMonthLabel.font = monthLabel.font
-            updatedMonthLabel.textAlignment = .Center
-            updatedMonthLabel.text = date.globalDescription
-            updatedMonthLabel.sizeToFit()
-            updatedMonthLabel.alpha = 0
-            updatedMonthLabel.center = self.monthLabel.center
-            
-            let offset = CGFloat(48)
-            updatedMonthLabel.transform = CGAffineTransformMakeTranslation(0, offset)
-            updatedMonthLabel.transform = CGAffineTransformMakeScale(1, 0.1)
-            
-            UIView.animateWithDuration(0.35, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-                self.animationFinished = false
-                self.monthLabel.transform = CGAffineTransformMakeTranslation(0, -offset)
-                self.monthLabel.transform = CGAffineTransformMakeScale(1, 0.1)
-                self.monthLabel.alpha = 0
-                
-                updatedMonthLabel.alpha = 1
-                updatedMonthLabel.transform = CGAffineTransformIdentity
-                
-                }) { _ in
-                    
-                    self.animationFinished = true
-                    self.monthLabel.frame = updatedMonthLabel.frame
-                    self.monthLabel.text = updatedMonthLabel.text
-                    self.monthLabel.transform = CGAffineTransformIdentity
-                    self.monthLabel.alpha = 1
-                    updatedMonthLabel.removeFromSuperview()
-            }
-            
-            self.view.insertSubview(updatedMonthLabel, aboveSubview: self.monthLabel)
+			monthLabel.text = date.globalDescription
+			
+//            let updatedMonthLabel = UILabel()
+//            updatedMonthLabel.textColor = monthLabel.textColor
+//            updatedMonthLabel.font = monthLabel.font
+//            updatedMonthLabel.textAlignment = .Center
+//            updatedMonthLabel.text = date.globalDescription
+//            updatedMonthLabel.sizeToFit()
+//            updatedMonthLabel.alpha = 0
+//            updatedMonthLabel.center = self.monthLabel.center
+//            
+//            let offset = CGFloat(48)
+//            updatedMonthLabel.transform = CGAffineTransformMakeTranslation(0, offset)
+//            updatedMonthLabel.transform = CGAffineTransformMakeScale(1, 0.1)
+//            
+//            UIView.animateWithDuration(0.35, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+//                self.animationFinished = false
+//                self.monthLabel.transform = CGAffineTransformMakeTranslation(0, -offset)
+//                self.monthLabel.transform = CGAffineTransformMakeScale(1, 0.1)
+//                self.monthLabel.alpha = 0
+//                
+//                updatedMonthLabel.alpha = 1
+//                updatedMonthLabel.transform = CGAffineTransformIdentity
+//                
+//                }) { _ in
+//                    
+//                    self.animationFinished = true
+//                    self.monthLabel.frame = updatedMonthLabel.frame
+//                    self.monthLabel.text = updatedMonthLabel.text
+//                    self.monthLabel.transform = CGAffineTransformIdentity
+//                    self.monthLabel.alpha = 1
+//                    updatedMonthLabel.removeFromSuperview()
+//            }
+//            
+//            self.view.insertSubview(updatedMonthLabel, aboveSubview: self.monthLabel)
         }
     }
     

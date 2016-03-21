@@ -247,6 +247,13 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
             }
         }
     }
+	
+	public override func selectPresentedDate(date: NSDate) {
+		let presentedDate = Date(date: date)
+		if let currentMonthView = monthViews[Presented] {
+			selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
+		}
+	}
 }
 
 // MARK: - Month management
@@ -255,9 +262,9 @@ extension CVCalendarMonthContentViewController {
     public func getFollowingMonth(date: NSDate) -> MonthView {
         let firstDate = calendarView.manager.monthDateRange(date).monthStartDate
         let components = Manager.componentsForDate(firstDate)
-        
+		
         components.month += 1
-        
+		
         let newDate = NSCalendar.currentCalendar().dateFromComponents(components)!
         let frame = scrollView.bounds
         let monthView = MonthView(calendarView: calendarView, date: newDate)

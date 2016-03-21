@@ -247,6 +247,13 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
             }
         }
     }
+	
+	public override func selectPresentedDate(date: NSDate) {
+		let presentedDate = Date(date: date)
+		if let currentMonthView = monthViews[Presented] {
+			selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
+		}
+	}
 }
 
 // MARK: - Month management

@@ -12,7 +12,9 @@ import UIKit
 public protocol CVCalendarViewDelegate {
     func presentationMode() -> CalendarMode
     func firstWeekday() -> Weekday
-    
+	
+	optional func userExplicitlySelectedDate(date: Date)
+	
     /**
     Determines whether resizing should cause related views' animation.
     */

@@ -260,6 +260,10 @@ extension CVCalendarView {
             controller.performedDayViewSelection(dayView) // TODO: Update to range selection
         }
     }
+	
+	public func userExplicitlySelectedDate(date: CVDate) {
+		delegate?.userExplicitlySelectedDate?(date)
+	}
 }
 
 // MARK: - Convenience API
@@ -276,6 +280,10 @@ extension CVCalendarView {
     public func toggleCurrentDayView() {
         contentController.togglePresentedDate(NSDate())
     }
+	
+	public func selectDate(date: NSDate) {
+		contentController.selectPresentedDate(date)
+	}
     
     public func loadNextView() {
         contentController.presentNextView(nil)
@@ -332,3 +340,4 @@ private extension CVCalendarView {
         }
     }
 }
+
