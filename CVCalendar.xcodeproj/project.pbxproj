@@ -584,6 +584,7 @@
 				27E120EB1C9C9DCC002CBC60 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		45D9D8AD1C5006AA006673B2 /* Build configuration list for PBXProject "CVCalendar" */ = {
 			isa = XCConfigurationList;
